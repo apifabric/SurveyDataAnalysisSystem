@@ -1,0 +1,79 @@
+{
+    "models": [
+        {
+            "classname": "Survey",
+            "code": "class Survey(Base):\n    \"\"\"description: Stores survey details.\"\"\"\n    __tablename__ = 'survey'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    title = Column(String, nullable=False)\n    created_date = Column(DateTime, nullable=False)\n",
+            "description": "Stores survey details.",
+            "name": "survey"
+        },
+        {
+            "classname": "Respondent",
+            "code": "class Respondent(Base):\n    \"\"\"description: Stores respondent details.\"\"\"\n    __tablename__ = 'respondent'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    email = Column(String)\n",
+            "description": "Stores respondent details.",
+            "name": "respondent"
+        },
+        {
+            "classname": "Question",
+            "code": "class Question(Base):\n    \"\"\"description: Holds questions for surveys.\"\"\"\n    __tablename__ = 'question'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)\n    text = Column(String, nullable=False)\n    question_type = Column(String)\n",
+            "description": "Holds questions for surveys.",
+            "name": "question"
+        },
+        {
+            "classname": "Choice",
+            "code": "class Choice(Base):\n    \"\"\"description: Stores choices for multiple choice questions.\"\"\"\n    __tablename__ = 'choice'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    question_id = Column(Integer, ForeignKey('question.id'), nullable=False)\n    text = Column(String, nullable=False)\n",
+            "description": "Stores choices for multiple choice questions.",
+            "name": "choice"
+        },
+        {
+            "classname": "Response",
+            "code": "class Response(Base):\n    \"\"\"description: Stores responses of respondents to questions.\"\"\"\n    __tablename__ = 'response'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    respondent_id = Column(Integer, ForeignKey('respondent.id'), nullable=False)\n    question_id = Column(Integer, ForeignKey('question.id'), nullable=False)\n    choice_id = Column(Integer, ForeignKey('choice.id'))\n    response_text = Column(String)\n",
+            "description": "Stores responses of respondents to questions.",
+            "name": "response"
+        },
+        {
+            "classname": "SurveyStatistics",
+            "code": "class SurveyStatistics(Base):\n    \"\"\"description: Holds aggregated statistics for surveys.\"\"\"\n    __tablename__ = 'surveystatistics'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)\n    total_respondents = Column(Integer, nullable=False)\n    average_score = Column(Float)  # Assuming some scoring is involved\n",
+            "description": "Holds aggregated statistics for surveys.",
+            "name": "surveystatistics"
+        },
+        {
+            "classname": "RespondentActivity",
+            "code": "class RespondentActivity(Base):\n    \"\"\"description: Tracks activity of each respondent over surveys.\"\"\"\n    __tablename__ = 'respondentactivity'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    respondent_id = Column(Integer, ForeignKey('respondent.id'), nullable=False)\n    last_active_date = Column(DateTime)\n    surveys_completed = Column(Integer, nullable=False, default=0)\n",
+            "description": "Tracks activity of each respondent over surveys.",
+            "name": "respondentactivity"
+        },
+        {
+            "classname": "QuestionStatistics",
+            "code": "class QuestionStatistics(Base):\n    \"\"\"description: Holds aggregated statistics for questions.\"\"\"\n    __tablename__ = 'questionstatistics'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    question_id = Column(Integer, ForeignKey('question.id'), nullable=False)\n    total_responses = Column(Integer, nullable=False)\n    most_chosen_choice = Column(Integer, ForeignKey('choice.id'))\n",
+            "description": "Holds aggregated statistics for questions.",
+            "name": "questionstatistics"
+        },
+        {
+            "classname": "Topic",
+            "code": "class Topic(Base):\n    \"\"\"description: Stores topics related to surveys.\"\"\"\n    __tablename__ = 'topic'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n",
+            "description": "Stores topics related to surveys.",
+            "name": "topic"
+        },
+        {
+            "classname": "SurveyTopic",
+            "code": "class SurveyTopic(Base):\n    \"\"\"description: Links surveys with topics.\"\"\"\n    __tablename__ = 'surveytopic'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)\n    topic_id = Column(Integer, ForeignKey('topic.id'), nullable=False)\n",
+            "description": "Links surveys with topics.",
+            "name": "surveytopic"
+        },
+        {
+            "classname": "QuestionType",
+            "code": "class QuestionType(Base):\n    \"\"\"description: Stores types of questions that can be used in surveys.\"\"\"\n    __tablename__ = 'questiontype'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    name = Column(String, nullable=False)\n    description = Column(String)\n",
+            "description": "Stores types of questions that can be used in surveys.",
+            "name": "questiontype"
+        },
+        {
+            "classname": "SurveyResponseSummary",
+            "code": "class SurveyResponseSummary(Base):\n    \"\"\"description: Summarizes responses of specific surveys.\"\"\"\n    __tablename__ = 'surveyresponsesummary'\n\n    id = Column(Integer, primary_key=True, autoincrement=True)\n    survey_id = Column(Integer, ForeignKey('survey.id'), nullable=False)\n    total_responses = Column(Integer, nullable=False)\n    completion_rate = Column(Float)\n",
+            "description": "Summarizes responses of specific surveys.",
+            "name": "surveyresponsesummary"
+        }
+    ],
+    "rules": [],
+    "test_data": "from datetime import datetime, date\n\n# Creating test data for Survey\nsurvey1 = Survey(id=1, title=\"Customer Satisfaction\", created_date=date(2023, 1, 1))\nsurvey2 = Survey(id=2, title=\"Product Feedback\", created_date=date(2023, 2, 15))\nsurvey3 = Survey(id=3, title=\"Employee Engagement\", created_date=date(2023, 3, 10))\nsurvey4 = Survey(id=4, title=\"Market Research\", created_date=date(2023, 4, 5))\n\n# Creating test data for Respondent\nrespondent1 = Respondent(id=1, name=\"John Doe\", email=\"johndoe@example.com\")\nrespondent2 = Respondent(id=2, name=\"Jane Smith\", email=\"janesmith@example.com\")\nrespondent3 = Respondent(id=3, name=\"Alice Johnson\", email=\"alice@example.com\")\nrespondent4 = Respondent(id=4, name=\"Bob Brown\", email=\"bob@example.com\")\n\n# Creating test data for Question\nquestion1 = Question(id=1, survey_id=1, text=\"How would you rate our service?\", question_type=\"Scale\")\nquestion2 = Question(id=2, survey_id=1, text=\"Would you recommend us?\", question_type=\"Yes/No\")\nquestion3 = Question(id=3, survey_id=2, text=\"What do you like most about the product?\", question_type=\"Open\")\nquestion4 = Question(id=4, survey_id=3, text=\"How satisfied are you with your work-life balance?\", question_type=\"Scale\")\n\n# Creating test data for Choice\nchoice1 = Choice(id=1, question_id=1, text=\"Excellent\")\nchoice2 = Choice(id=2, question_id=1, text=\"Good\")\nchoice3 = Choice(id=3, question_id=2, text=\"Yes\")\nchoice4 = Choice(id=4, question_id=2, text=\"No\")\n\n# Creating test data for Response\nresponse1 = Response(id=1, respondent_id=1, question_id=1, choice_id=1, response_text=None)\nresponse2 = Response(id=2, respondent_id=2, question_id=2, choice_id=3, response_text=None)\nresponse3 = Response(id=3, respondent_id=3, question_id=3, choice_id=None, response_text=\"User-friendly interface\")\nresponse4 = Response(id=4, respondent_id=4, question_id=4, choice_id=2, response_text=None)\n\n# Creating test data for SurveyStatistics\nsurvey_statistics1 = SurveyStatistics(id=1, survey_id=1, total_respondents=4, average_score=4.5)\nsurvey_statistics2 = SurveyStatistics(id=2, survey_id=2, total_respondents=3, average_score=4.0)\nsurvey_statistics3 = SurveyStatistics(id=3, survey_id=3, total_respondents=2, average_score=3.5)\nsurvey_statistics4 = SurveyStatistics(id=4, survey_id=4, total_respondents=4, average_score=4.2)\n\n# Creating test data for RespondentActivity\nrespondent_activity1 = RespondentActivity(id=1, respondent_id=1, last_active_date=date(2023, 5, 18), surveys_completed=1)\nrespondent_activity2 = RespondentActivity(id=2, respondent_id=2, last_active_date=date(2023, 5, 20), surveys_completed=1)\nrespondent_activity3 = RespondentActivity(id=3, respondent_id=3, last_active_date=date(2023, 5, 22), surveys_completed=1)\nrespondent_activity4 = RespondentActivity(id=4, respondent_id=4, last_active_date=date(2023, 5, 24), surveys_completed=1)\n\n# Creating test data for QuestionStatistics\nquestion_statistics1 = QuestionStatistics(id=1, question_id=1, total_responses=4, most_chosen_choice=1)\nquestion_statistics2 = QuestionStatistics(id=2, question_id=2, total_responses=3, most_chosen_choice=3)\nquestion_statistics3 = QuestionStatistics(id=3, question_id=3, total_responses=2, most_chosen_choice=None)\nquestion_statistics4 = QuestionStatistics(id=4, question_id=4, total_responses=4, most_chosen_choice=2)\n\n# Creating test data for Topic\ntopic1 = Topic(id=1, name=\"Customer Service\", description=\"Related to customer service\")\ntopic2 = Topic(id=2, name=\"Product Quality\", description=\"Focus on product quality\")\ntopic3 = Topic(id=3, name=\"Employee Satisfaction\", description=\"Employee satisfaction and engagement\")\ntopic4 = Topic(id=4, name=\"Market Trends\", description=\"Observations about market trends\")\n\n# Creating test data for SurveyTopic\nsurvey_topic1 = SurveyTopic(id=1, survey_id=1, topic_id=1)\nsurvey_topic2 = SurveyTopic(id=2, survey_id=2, topic_id=2)\nsurvey_topic3 = SurveyTopic(id=3, survey_id=3, topic_id=3)\nsurvey_topic4 = SurveyTopic(id=4, survey_id=4, topic_id=4)\n\n# Creating test data for QuestionType\nquestion_type1 = QuestionType(id=1, name=\"Scale\", description=\"Numerical scale from 1 to 10\")\nquestion_type2 = QuestionType(id=2, name=\"Yes/No\", description=\"Binary yes or no choice\")\nquestion_type3 = QuestionType(id=3, name=\"Open\", description=\"Open-ended question\")\nquestion_type4 = QuestionType(id=4, name=\"Multiple Choice\", description=\"Several options to choose from\")\n\n# Creating test data for SurveyResponseSummary\nsurvey_response_summary1 = SurveyResponseSummary(id=1, survey_id=1, total_responses=4, completion_rate=0.75)\nsurvey_response_summary2 = SurveyResponseSummary(id=2, survey_id=2, total_responses=3, completion_rate=0.66)\nsurvey_response_summary3 = SurveyResponseSummary(id=3, survey_id=3, total_responses=2, completion_rate=0.5)\nsurvey_response_summary4 = SurveyResponseSummary(id=4, survey_id=4, total_responses=4, completion_rate=1.0)",
+    "name": "SurveyDataAnalysisSystem"
+}

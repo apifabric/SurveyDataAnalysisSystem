@@ -1,0 +1,49 @@
+<o-form-layout-manager attr="Surveytopic" mode="tab" title="SURVEYTOPIC">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="SurveytopicTable" 
+            service="Surveytopic" 
+            entity="Surveytopic" 
+            title="SURVEYTOPIC"
+            keys="id"
+            columns="id;survey_id;topic_id" 
+            header-actions="R;D"
+            visible-columns="id;survey_id;topic_id"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="survey_id" title="survey_id">
+    <o-table-cell-renderer-service attr="survey_id" 
+        service="Survey" entity="SurveyType" columns="id;id"
+        parent-keys="id:survey_id"
+        value-column="id" keys="survey_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="topic_id" title="topic_id">
+    <o-table-cell-renderer-service attr="topic_id" 
+        service="Topic" entity="TopicType" columns="id;name"
+        parent-keys="id:topic_id"
+        value-column="name" keys="topic_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

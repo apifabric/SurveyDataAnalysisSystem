@@ -1,0 +1,44 @@
+<o-form-layout-manager attr="Respondentactivity" mode="tab" title="RESPONDENTACTIVITY">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="RespondentactivityTable" 
+            service="Respondentactivity" 
+            entity="Respondentactivity" 
+            title="RESPONDENTACTIVITY"
+            keys="id"
+            columns="id;respondent_id;last_active_date;surveys_completed" 
+            header-actions="R;D"
+            visible-columns="id;respondent_id;last_active_date;surveys_completed"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="respondent_id" title="respondent_id">
+    <o-table-cell-renderer-service attr="respondent_id" 
+        service="Respondent" entity="RespondentType" columns="id;name"
+        parent-keys="id:respondent_id"
+        value-column="name" keys="respondent_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-date-input #last_active_date attr="last_active_date" type="timestamp" label="last_active_date" editable="no" required="no" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+            
+            <o-table-column #surveys_completed attr="surveys_completed" title="surveys_completed" type="integer" editable="no" required="yes" content-align="center"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

@@ -1,0 +1,347 @@
+about:
+  date: November 20, 2024 04:02:46
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 12
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Choice:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: question_id
+      required: true
+    - name: text
+      required: true
+    description: Stores choices for multiple choice questions.
+    info_list: Stores choices for multiple choice questions.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - most_chosen_choice
+      name: QuestionstatisticList
+      resource: Questionstatistic
+    - direction: tomany
+      fks:
+      - choice_id
+      name: ResponseList
+      resource: Response
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    type: Choice
+    user_key: id
+  Question:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: survey_id
+      required: true
+    - name: text
+      required: true
+    - name: question_type
+    description: Holds questions for surveys.
+    info_list: Holds questions for surveys.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - question_id
+      name: ChoiceList
+      resource: Choice
+    - direction: tomany
+      fks:
+      - question_id
+      name: QuestionstatisticList
+      resource: Questionstatistic
+    - direction: tomany
+      fks:
+      - question_id
+      name: ResponseList
+      resource: Response
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Question
+    user_key: id
+  Questionstatistic:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: most_chosen_choice
+    - name: question_id
+      required: true
+    - name: total_responses
+      required: true
+    description: Holds aggregated statistics for questions.
+    info_list: Holds aggregated statistics for questions.
+    tab_groups:
+    - direction: toone
+      fks:
+      - most_chosen_choice
+      name: choice
+      resource: Choice
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    type: Questionstatistic
+    user_key: id
+  Questiontype:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: id
+    description: Stores types of questions that can be used in surveys.
+    info_list: Stores types of questions that can be used in surveys.
+    type: Questiontype
+    user_key: name
+  Respondent:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: email
+    - name: id
+    description: Stores respondent details.
+    info_list: Stores respondent details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - respondent_id
+      name: RespondentactivityList
+      resource: Respondentactivity
+    - direction: tomany
+      fks:
+      - respondent_id
+      name: ResponseList
+      resource: Response
+    type: Respondent
+    user_key: name
+  Respondentactivity:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: respondent_id
+      required: true
+    - name: last_active_date
+      type: DATETIME
+    - name: surveys_completed
+      required: true
+    description: Tracks activity of each respondent over surveys.
+    info_list: Tracks activity of each respondent over surveys.
+    tab_groups:
+    - direction: toone
+      fks:
+      - respondent_id
+      name: respondent
+      resource: Respondent
+    type: Respondentactivity
+    user_key: id
+  Response:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: choice_id
+    - name: question_id
+      required: true
+    - name: respondent_id
+      required: true
+    - name: response_text
+    description: Stores responses of respondents to questions.
+    info_list: Stores responses of respondents to questions.
+    tab_groups:
+    - direction: toone
+      fks:
+      - choice_id
+      name: choice
+      resource: Choice
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    - direction: toone
+      fks:
+      - respondent_id
+      name: respondent
+      resource: Respondent
+    type: Response
+    user_key: id
+  Survey:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: title
+      required: true
+    - name: created_date
+      required: true
+      type: DATETIME
+    description: Stores survey details.
+    info_list: Stores survey details.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - survey_id
+      name: QuestionList
+      resource: Question
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveyresponsesummaryList
+      resource: Surveyresponsesummary
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveystatisticList
+      resource: Surveystatistic
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveytopicList
+      resource: Surveytopic
+    type: Survey
+    user_key: id
+  Surveyresponsesummary:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: survey_id
+      required: true
+    - name: total_responses
+      required: true
+    - name: completion_rate
+    description: Summarizes responses of specific surveys.
+    info_list: Summarizes responses of specific surveys.
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Surveyresponsesummary
+    user_key: id
+  Surveystatistic:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: survey_id
+      required: true
+    - name: total_respondents
+      required: true
+    - name: average_score
+    description: Holds aggregated statistics for surveys.
+    info_list: Holds aggregated statistics for surveys.
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Surveystatistic
+    user_key: id
+  Surveytopic:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: survey_id
+      required: true
+    - name: topic_id
+      required: true
+    description: Links surveys with topics.
+    info_list: Links surveys with topics.
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    - direction: toone
+      fks:
+      - topic_id
+      name: topic
+      resource: Topic
+    type: Surveytopic
+    user_key: id
+  Topic:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: id
+    description: Stores topics related to surveys.
+    info_list: Stores topics related to surveys.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - topic_id
+      name: SurveytopicList
+      resource: Surveytopic
+    type: Topic
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

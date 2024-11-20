@@ -1,0 +1,229 @@
+<div class="container">
+<o-form-container breadcrumb="yes" breadcrumb-label-columns="id" breadcrumb-separator=", " class="fill-form">
+      <o-form #form attr="Survey_form_edit" 
+        service="Survey" 
+        entity="Survey" 
+        fxLayout="column" 
+        show-header="yes" 
+        header-actions="R;I;U;D"
+        #oDetailForm keys="id" 
+        keys-sql-types="INTEGER" 
+        show-header-navigation="yes"
+        (onDataLoaded)="onDataLoaded($event)">
+
+  <o-row attr="row1" layout-align="start stretch">
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxFlex fxLayoutGap="14px">
+      
+      <o-integer-input #id attr="id" label=" id*" type="integer" editable="no" required="no" ></o-integer-input>
+      
+      <o-text-input #title attr="title" label="title" enabled="yes" required="yes" fxFlex="20%" class="form-field"></o-text-input>
+      
+      <o-date-input #created_date attr="created_date" type="timestamp" label="created_date" editable="no" required="yes" format="LL" fxFlex="20%" class="form-field"></o-date-input>
+      
+    </div>
+  </o-row>
+      
+      <mat-tab-group fxFill>
+        
+        <mat-tab label="QUESTION-survey_id">
+    <div layout-padding>
+      <o-table 
+        attr="QuestionTable" 
+        service="Question" 
+        entity="Question" 
+        keys="id"
+        parent-keys="survey_id:id"
+        columns="id;survey_id;text;question_type"  
+        horizontal-scroll="yes"
+        detail-form-route="Question" 
+        edit-form-route="Question"
+        visible-columns="id;survey_id;text;question_type"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="survey_id" title="survey_id">
+    <o-table-cell-renderer-service attr="survey_id" 
+        service="Survey" entity="SurveyType" columns="id;id"
+        parent-keys="id:survey_id"
+        value-column="id" keys="survey_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #text attr="text" title="text" editable="no" required="yes" content-align="left"></o-table-column>
+        
+          <o-table-column #question_type attr="question_type" title="question_type" editable="no" required="no" content-align="left"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+        <mat-tab label="SURVEYRESPONSESUMMARY-survey_id">
+    <div layout-padding>
+      <o-table 
+        attr="SurveyresponsesummaryTable" 
+        service="Surveyresponsesummary" 
+        entity="Surveyresponsesummary" 
+        keys="id"
+        parent-keys="survey_id:id"
+        columns="id;survey_id;total_responses;completion_rate"  
+        horizontal-scroll="yes"
+        detail-form-route="Surveyresponsesummary" 
+        edit-form-route="Surveyresponsesummary"
+        visible-columns="id;survey_id;total_responses;completion_rate"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="survey_id" title="survey_id">
+    <o-table-cell-renderer-service attr="survey_id" 
+        service="Survey" entity="SurveyType" columns="id;id"
+        parent-keys="id:survey_id"
+        value-column="id" keys="survey_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #total_responses attr="total_responses" title="total_responses" type="integer" editable="no" required="yes" content-align="center"></o-table-column>
+        
+          <o-table-column #completion_rate attr="completion_rate" title="completion_rate" type="real" min-decimal-digits="2" max-decimal-digits="4" min="0" max="1000000.0000" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+        <mat-tab label="SURVEYSTATISTIC-survey_id">
+    <div layout-padding>
+      <o-table 
+        attr="SurveystatisticTable" 
+        service="Surveystatistic" 
+        entity="Surveystatistic" 
+        keys="id"
+        parent-keys="survey_id:id"
+        columns="id;survey_id;total_respondents;average_score"  
+        horizontal-scroll="yes"
+        detail-form-route="Surveystatistic" 
+        edit-form-route="Surveystatistic"
+        visible-columns="id;survey_id;total_respondents;average_score"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="survey_id" title="survey_id">
+    <o-table-cell-renderer-service attr="survey_id" 
+        service="Survey" entity="SurveyType" columns="id;id"
+        parent-keys="id:survey_id"
+        value-column="id" keys="survey_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column #total_respondents attr="total_respondents" title="total_respondents" type="integer" editable="no" required="yes" content-align="center"></o-table-column>
+        
+          <o-table-column #average_score attr="average_score" title="average_score" type="real" min-decimal-digits="2" max-decimal-digits="4" min="0" max="1000000.0000" content-align="center"></o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+        <mat-tab label="SURVEYTOPIC-survey_id">
+    <div layout-padding>
+      <o-table 
+        attr="SurveytopicTable" 
+        service="Surveytopic" 
+        entity="Surveytopic" 
+        keys="id"
+        parent-keys="survey_id:id"
+        columns="id;survey_id;topic_id"  
+        horizontal-scroll="yes"
+        detail-form-route="Surveytopic" 
+        edit-form-route="Surveytopic"
+        visible-columns="id;survey_id;topic_id"  
+        sort-columns="id" 
+        query-rows="25" 
+        quick-filter="yes"
+        row-height="medium" 
+        select-all-checkbox="true" 
+        pageable="yes"  
+        auto-adjust="true" 
+        virtual-scroll="yes" 
+        insert-button="yes" 
+        delete-button="yes" 
+        fixed-header="true" 
+        class="vertical-padding-8"
+        edition-mode="dblclick" 
+        horizontal-scroll="yes" class="fill-form">
+        
+          <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+        
+          <o-table-column attr="survey_id" title="survey_id">
+    <o-table-cell-renderer-service attr="survey_id" 
+        service="Survey" entity="SurveyType" columns="id;id"
+        parent-keys="id:survey_id"
+        value-column="id" keys="survey_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+          <o-table-column attr="topic_id" title="topic_id">
+    <o-table-cell-renderer-service attr="topic_id" 
+        service="Topic" entity="TopicType" columns="id;name"
+        parent-keys="id:topic_id"
+        value-column="name" keys="topic_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+        
+        <o-table-paginator page-size-options="25;50;100"></o-table-paginator>
+      </o-table>
+    </div>
+</mat-tab>
+        
+      </mat-tab-group>
+      
+    </o-form>
+  </o-form-container>
+</div>

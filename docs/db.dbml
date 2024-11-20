@@ -1,0 +1,115 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Choice: Stores choices for multiple choice questions.
+Question: Holds questions for surveys.
+Survey: Stores survey details.
+Questionstatistic: Holds aggregated statistics for questions.
+Questiontype: Stores types of questions that can be used in surveys.
+Respondent: Stores respondent details.
+Respondentactivity: Tracks activity of each respondent over surveys.
+Response: Stores responses of respondents to questions.
+Surveyresponsesummary: Summarizes responses of specific surveys.
+Surveystatistic: Holds aggregated statistics for surveys.
+Surveytopic: Links surveys with topics.
+Topic: Stores topics related to surveys.
+'''
+}
+
+Table Choice {
+    id INTEGER [primary key]
+    question_id INTEGER 
+    text VARCHAR 
+    }
+
+Table Question {
+    id INTEGER [primary key]
+    survey_id INTEGER 
+    text VARCHAR 
+    question_type VARCHAR 
+    }
+
+Table Survey {
+    id INTEGER [primary key]
+    title VARCHAR 
+    created_date DATETIME 
+    }
+
+Table Questionstatistic {
+    id INTEGER [primary key]
+    question_id INTEGER 
+    total_responses INTEGER 
+    most_chosen_choice INTEGER 
+    }
+
+Table Questiontype {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    }
+
+Table Respondent {
+    id INTEGER [primary key]
+    name VARCHAR 
+    email VARCHAR 
+    }
+
+Table Respondentactivity {
+    id INTEGER [primary key]
+    respondent_id INTEGER 
+    last_active_date DATETIME 
+    surveys_completed INTEGER 
+    }
+
+Table Response {
+    id INTEGER [primary key]
+    respondent_id INTEGER 
+    question_id INTEGER 
+    choice_id INTEGER 
+    response_text VARCHAR 
+    }
+
+Table Surveyresponsesummary {
+    id INTEGER [primary key]
+    survey_id INTEGER 
+    total_responses INTEGER 
+    completion_rate FLOAT 
+    }
+
+Table Surveystatistic {
+    id INTEGER [primary key]
+    survey_id INTEGER 
+    total_respondents INTEGER 
+    average_score FLOAT 
+    }
+
+Table Surveytopic {
+    id INTEGER [primary key]
+    survey_id INTEGER 
+    topic_id INTEGER 
+    }
+
+Table Topic {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    }
+
+
+
+// Relationships
+    Ref: Choice.(question_id) < Question.(id)
+    Ref: Question.(survey_id) < Survey.(id)
+    Ref: Questionstatistic.(most_chosen_choice) < Choice.(id)
+    Ref: Questionstatistic.(question_id) < Question.(id)
+    Ref: Respondentactivity.(respondent_id) < Respondent.(id)
+    Ref: Response.(choice_id) < Choice.(id)
+    Ref: Response.(question_id) < Question.(id)
+    Ref: Response.(respondent_id) < Respondent.(id)
+    Ref: Surveyresponsesummary.(survey_id) < Survey.(id)
+    Ref: Surveystatistic.(survey_id) < Survey.(id)
+    Ref: Surveytopic.(survey_id) < Survey.(id)
+    Ref: Surveytopic.(topic_id) < Topic.(id)

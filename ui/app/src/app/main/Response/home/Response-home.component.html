@@ -1,0 +1,60 @@
+<o-form-layout-manager attr="Response" mode="tab" title="RESPONSE">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="ResponseTable" 
+            service="Response" 
+            entity="Response" 
+            title="RESPONSE"
+            keys="id"
+            columns="id;choice_id;question_id;respondent_id;response_text" 
+            header-actions="R;D"
+            visible-columns="id;choice_id;question_id;respondent_id;response_text"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="choice_id" title="choice_id">
+    <o-table-cell-renderer-service attr="choice_id" 
+        service="Choice" entity="ChoiceType" columns="id;id"
+        parent-keys="id:choice_id"
+        value-column="id" keys="choice_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="question_id" title="question_id">
+    <o-table-cell-renderer-service attr="question_id" 
+        service="Question" entity="QuestionType" columns="id;id"
+        parent-keys="id:question_id"
+        value-column="id" keys="question_id"
+        visible-columns="id" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="respondent_id" title="respondent_id">
+    <o-table-cell-renderer-service attr="respondent_id" 
+        service="Respondent" entity="RespondentType" columns="id;name"
+        parent-keys="id:respondent_id"
+        value-column="name" keys="respondent_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #response_text attr="response_text" title="response_text" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

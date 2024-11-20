@@ -1,0 +1,531 @@
+about:
+  date: November 20, 2024 04:02:46
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Choice:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: question_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: text
+      required: true
+      template: text
+      type: VARCHAR
+    description: Stores choices for multiple choice questions.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores choices for multiple choice questions.
+    label: Choice
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - most_chosen_choice
+      name: QuestionstatisticList
+      resource: Questionstatistic
+    - direction: tomany
+      fks:
+      - choice_id
+      name: ResponseList
+      resource: Response
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    type: Choice
+  Question:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: survey_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: text
+      required: true
+      template: text
+      type: VARCHAR
+    - name: question_type
+      template: text
+      type: VARCHAR
+    description: Holds questions for surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Holds questions for surveys.
+    label: Question
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - question_id
+      name: ChoiceList
+      resource: Choice
+    - direction: tomany
+      fks:
+      - question_id
+      name: QuestionstatisticList
+      resource: Questionstatistic
+    - direction: tomany
+      fks:
+      - question_id
+      name: ResponseList
+      resource: Response
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Question
+  Questionstatistic:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: most_chosen_choice
+      template: integer
+      type: INTEGER
+    - name: question_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: total_responses
+      required: true
+      template: integer
+      type: INTEGER
+    description: Holds aggregated statistics for questions.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Holds aggregated statistics for questions.
+    label: Questionstatistic
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - most_chosen_choice
+      name: choice
+      resource: Choice
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    type: Questionstatistic
+  Questiontype:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores types of questions that can be used in surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores types of questions that can be used in surveys.
+    label: Questiontype
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Questiontype
+  Respondent:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores respondent details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores respondent details.
+    label: Respondent
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - respondent_id
+      name: RespondentactivityList
+      resource: Respondentactivity
+    - direction: tomany
+      fks:
+      - respondent_id
+      name: ResponseList
+      resource: Response
+    type: Respondent
+  Respondentactivity:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: respondent_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: last_active_date
+      type: DATETIME
+    - name: surveys_completed
+      required: true
+      template: integer
+      type: INTEGER
+    description: Tracks activity of each respondent over surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Tracks activity of each respondent over surveys.
+    label: Respondentactivity
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - respondent_id
+      name: respondent
+      resource: Respondent
+    type: Respondentactivity
+  Response:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: choice_id
+      template: integer
+      type: INTEGER
+    - name: question_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: respondent_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: response_text
+      template: text
+      type: VARCHAR
+    description: Stores responses of respondents to questions.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores responses of respondents to questions.
+    label: Response
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - choice_id
+      name: choice
+      resource: Choice
+    - direction: toone
+      fks:
+      - question_id
+      name: question
+      resource: Question
+    - direction: toone
+      fks:
+      - respondent_id
+      name: respondent
+      resource: Respondent
+    type: Response
+  Survey:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: title
+      required: true
+      template: text
+      type: VARCHAR
+    - name: created_date
+      required: true
+      type: DATETIME
+    description: Stores survey details.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores survey details.
+    label: Survey
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - survey_id
+      name: QuestionList
+      resource: Question
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveyresponsesummaryList
+      resource: Surveyresponsesummary
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveystatisticList
+      resource: Surveystatistic
+    - direction: tomany
+      fks:
+      - survey_id
+      name: SurveytopicList
+      resource: Surveytopic
+    type: Survey
+  Surveyresponsesummary:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: survey_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: total_responses
+      required: true
+      template: integer
+      type: INTEGER
+    - name: completion_rate
+      template: real
+      type: FLOAT
+    description: Summarizes responses of specific surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Summarizes responses of specific surveys.
+    label: Surveyresponsesummary
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Surveyresponsesummary
+  Surveystatistic:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: survey_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: total_respondents
+      required: true
+      template: integer
+      type: INTEGER
+    - name: average_score
+      template: real
+      type: FLOAT
+    description: Holds aggregated statistics for surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Holds aggregated statistics for surveys.
+    label: Surveystatistic
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    type: Surveystatistic
+  Surveytopic:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: survey_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: topic_id
+      required: true
+      template: integer
+      type: INTEGER
+    description: Links surveys with topics.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    hidden: {}
+    home_template: home_template.html
+    info_list: Links surveys with topics.
+    label: Surveytopic
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - survey_id
+      name: survey
+      resource: Survey
+    - direction: toone
+      fks:
+      - topic_id
+      name: topic
+      resource: Topic
+    type: Surveytopic
+  Topic:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores topics related to surveys.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    hidden: {}
+    home_template: home_template.html
+    info_list: Stores topics related to surveys.
+    label: Topic
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - topic_id
+      name: SurveytopicList
+      resource: Surveytopic
+    type: Topic
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false
